@@ -57,6 +57,8 @@ public class DemoRunner {
         findAndUpdatePartial();
         // Inserts new student and relation with existing class
         insertNew();
+        // Delete data via json view
+        deleteRecord();
     }
 
     private void initData() {
@@ -226,6 +228,30 @@ public class DemoRunner {
             }
         } else {
             LOG.error("Failed to save student class for {}", studentName);
+        }
+    }
+
+    void deleteRecord() {
+        String studentName = "Ivone";
+        Optional<StudentView> optionalStudentView = studentViewRepository.findByName(studentName);
+        boolean found = optionalStudentView.isPresent();
+        if (found) {
+            studentViewRepository.deleteByName(studentName);
+            optionalStudentView = studentViewRepository.findByName(studentName);
+            if (optionalStudentView.isPresent()) {
+                LOG.error("Student with name {} has not been deleted when it was expected", studentName);
+            } else {
+                LOG.info("Student with name {} was successfully deleted", studentName);
+            }
+            // Verify via regular repo
+            Optional<Student> optionalStudent = studentRepository.findByName(studentName);
+            if (optionalStudent.isPresent()) {
+                LOG.error("Student with name {} has not be deleted when it was expected. Tested using studentRepository", studentName);
+            } else {
+                LOG.info("Student with name {} was successfully deleted. Tested using studentRepository", studentName);
+            }
+        } else {
+            LOG.error("Student with name {} not found", studentName);
         }
     }
 }

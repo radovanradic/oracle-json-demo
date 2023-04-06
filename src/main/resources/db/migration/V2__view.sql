@@ -9,5 +9,5 @@ SELECT JSON{'student'  : s.name WITH UPDATE,
                                                     'teacher': (SELECT JSON{'teachID': t.id, 'teacher': t.name} FROM teacher t WHERE t.id = c.teacher_id)
                                                 } FROM class c WITH UPDATE WHERE c.id = ssch.class_id),
                                       'id': ssch.id
-                                      } FROM student_classes ssch WITH INSERT WHERE ssch.student_id = s.id]
-            } FROM student s WITH INSERT;
+                                      } FROM student_classes ssch WITH INSERT DELETE WHERE ssch.student_id = s.id]
+            } FROM student s WITH INSERT UPDATE DELETE;
