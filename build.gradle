@@ -15,9 +15,7 @@ dependencies {
     annotationProcessor "io.micronaut.data:micronaut-data-processor:4.0.0-SNAPSHOT"
     implementation "io.micronaut.data:micronaut-data-jdbc:4.0.0-SNAPSHOT"
     implementation "io.micronaut.serde:micronaut-serde-jackson"
-    // Need to use this exact dependency since it has support for LocalTime serde for Oracle that we missed
-    // 2.0.0-SNAPSHOT is still not resolving this one we need
-    implementation "io.micronaut.serde:micronaut-serde-oracle-jdbc-json:2.0.0-20230406.084130-74"
+    implementation "io.micronaut.serde:micronaut-serde-oracle-jdbc-json:2.0.0-SNAPSHOT"
     implementation "io.micronaut.sql:micronaut-jdbc-hikari:5.0.0-SNAPSHOT"
     implementation "com.oracle.database.jdbc:ojdbc8:21.9.0.0"
     implementation "io.micronaut.flyway:micronaut-flyway"
