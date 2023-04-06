@@ -14,7 +14,6 @@ repositories {
 dependencies {
     annotationProcessor "io.micronaut.data:micronaut-data-processor:4.0.0-SNAPSHOT"
     implementation "io.micronaut.data:micronaut-data-jdbc:4.0.0-SNAPSHOT"
-    implementation "io.micronaut.serde:micronaut-serde-jackson"
     implementation "io.micronaut.serde:micronaut-serde-oracle-jdbc-json:2.0.0-SNAPSHOT"
     implementation "io.micronaut.sql:micronaut-jdbc-hikari:5.0.0-SNAPSHOT"
     implementation "com.oracle.database.jdbc:ojdbc8:21.9.0.0"

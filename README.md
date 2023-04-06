@@ -20,8 +20,4 @@ This demo just runs some scenarios with relational tables and then uses/modifies
 
 Current issues with Micronaut Data solution for Oracle Json View:
 1. When creating new record with auto increment ID, we are not able to return newly generated id. 
-   That will be worked on in near future.     
-2. If this entry in build.gradle `implementation "io.micronaut.serde:micronaut-serde-jackson"` is not included then
-   we get issue with multiple beans injection for `JsonMapper` because mappers `OracleJdbcJsonBinaryObjectMapper` and `OracleJdbcJsonTextObjectMapper`
-   are found on the classpath and neither is marked as primary. We might need to work on solution for this or just make sure
-   serde jackson is included in dependencies since it has got `JsonMapper` with `@Primary` annotation.
+   That will be worked on in near future.
