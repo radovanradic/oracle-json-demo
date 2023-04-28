@@ -246,7 +246,7 @@ public class DemoRunner {
             // Verify via regular repo
             Optional<Student> optionalStudent = studentRepository.findByName(studentName);
             if (optionalStudent.isPresent()) {
-                LOG.error("Student with name {} has not be deleted when it was expected. Tested using studentRepository", studentName);
+                LOG.error("Student with name {} has not been deleted when it was expected. Tested using studentRepository", studentName);
             } else {
                 LOG.info("Student with name {} was successfully deleted. Tested using studentRepository", studentName);
             }
