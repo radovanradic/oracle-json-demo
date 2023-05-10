@@ -112,7 +112,7 @@ public class DemoRunner {
                 // Schedule one hour later
                 schedule.getClazz().setTime(schedule.getClazz().getTime().plusHours(1));
             }
-            studentViewRepository.updateByName(denisStudentView, denisStudentView.getStudent());
+            studentViewRepository.update(denisStudentView);
             student = studentRepository.findByName(denisStudentView.getStudent()).get();
             // Validate times are scheduled one hour later
             for (Class clazz : student.getClasses()) {
