@@ -1,12 +1,16 @@
 package org.example.entity.view;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.micronaut.serde.annotation.Serdeable;
+import io.micronaut.data.annotation.GeneratedValue;
+import io.micronaut.data.annotation.Id;
+import io.micronaut.data.annotation.JsonView;
 
 import java.util.List;
 
-@Serdeable
+@JsonView(value = "STUDENT_SCHEDULE")
 public class StudentView {
+        @Id
+        @GeneratedValue(GeneratedValue.Type.IDENTITY)
         private Long studentId;
         private String student;
         private List<StudentScheduleView> schedule;

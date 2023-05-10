@@ -74,9 +74,9 @@ public class DemoRunner {
         Student josh = studentRepository.save(new Student("Josh"));
         Student fred = studentRepository.save(new Student("Fred"));
 
-        Class math = classRepository.save(new Class("Math", "A101", LocalTime.of(10, 00), teacherAnna));
-        Class english = classRepository.save(new Class("English", "A102", LocalTime.of(11, 00), teacherJeff));
-        Class german = classRepository.save(new Class("German", "A103", LocalTime.of(12, 00), teacherAnna));
+        Class math = classRepository.save(new Class("Math", "A101", LocalTime.of(10, 0), teacherAnna));
+        Class english = classRepository.save(new Class("English", "A102", LocalTime.of(11, 0), teacherJeff));
+        Class german = classRepository.save(new Class("German", "A103", LocalTime.of(12, 0), teacherAnna));
 
         studentClassRepository.save(new StudentClass(denis, math));
         studentClassRepository.save(new StudentClass(josh, math));
@@ -90,7 +90,7 @@ public class DemoRunner {
     void findAndUpdate() {
         // Test finding data using view from records created in source tables
         String studentName = "Denis";
-        Optional<StudentView> optDenisStudentView = studentViewRepository.findByName(studentName);
+        Optional<StudentView> optDenisStudentView = studentViewRepository.findByStudent(studentName);
         boolean found = optDenisStudentView.isPresent();
         if (found) {
             LOG.info("Found student classes for student {}: {}", studentName, optDenisStudentView.get());
@@ -129,7 +129,7 @@ public class DemoRunner {
 
     void findNonExisting() {
         String randomName = UUID.randomUUID().toString();
-        Optional<StudentView> optUnexpectedStudent = studentViewRepository.findByName(randomName);
+        Optional<StudentView> optUnexpectedStudent = studentViewRepository.findByStudent(randomName);
         boolean found = optUnexpectedStudent.isPresent();
         if (found) {
             LOG.error("Found student by random name: {}", randomName);
@@ -140,7 +140,7 @@ public class DemoRunner {
 
     void findAndUpdatePartial() {
         String studentName = "Josh";
-        Optional<StudentView> optJoshStudentView = studentViewRepository.findByName(studentName);
+        Optional<StudentView> optJoshStudentView = studentViewRepository.findByStudent(studentName);
         boolean found = optJoshStudentView.isPresent();
         if (found) {
             LOG.info("Found student classes for student {}: {}", studentName, optJoshStudentView.get());
@@ -151,7 +151,7 @@ public class DemoRunner {
         if (found) {
             // Let's rename the student
             String newStudentName = "New Josh";
-            studentViewRepository.updateName(studentName, newStudentName);
+            studentViewRepository.updateStudentByStudentId(optJoshStudentView.get().getStudentId(), newStudentName);
             if (studentRepository.findByName(studentName).isPresent()) {
                 LOG.error("Student name {} should have been update to {}", studentName, newStudentName);
             } else {
@@ -159,14 +159,14 @@ public class DemoRunner {
             }
 
             // Try to trigger optimistic lock exception with invalid ETAG
-            StudentView newJoshStudentView = studentViewRepository.findByName(newStudentName).get();
+            StudentView newJoshStudentView = studentViewRepository.findByStudent(newStudentName).get();
             if (newJoshStudentView == null) {
                 LOG.error("Couldn't find student by name {}", newStudentName);
             } else {
                 newJoshStudentView.getMetadata().setEtag(UUID.randomUUID().toString());
                 boolean error = false;
                 try {
-                    studentViewRepository.update(newJoshStudentView, newJoshStudentView.getStudentId());
+                    studentViewRepository.update(newJoshStudentView);
                 } catch (OptimisticLockException e) {
                     error = true;
                 }
@@ -205,9 +205,9 @@ public class DemoRunner {
 
         newStudentScheduleView.setClazz(studentScheduleClassView);
         ivoneStudentView.setSchedule(List.of(newStudentScheduleView));
-        studentViewRepository.insert(ivoneStudentView);
+        studentViewRepository.save(ivoneStudentView);
 
-        Optional<StudentView> optIvoneStudentView = studentViewRepository.findByName(studentName);
+        Optional<StudentView> optIvoneStudentView = studentViewRepository.findById(ivoneStudentView.getStudentId());
         boolean found = optIvoneStudentView.isPresent();
         if (found) {
             LOG.info("Successfully saved student class for {}: {}", studentName, optIvoneStudentView.get());
@@ -233,11 +233,11 @@ public class DemoRunner {
 
     void deleteRecord() {
         String studentName = "Ivone";
-        Optional<StudentView> optionalStudentView = studentViewRepository.findByName(studentName);
+        Optional<StudentView> optionalStudentView = studentViewRepository.findByStudent(studentName);
         boolean found = optionalStudentView.isPresent();
         if (found) {
-            studentViewRepository.deleteByName(studentName);
-            optionalStudentView = studentViewRepository.findByName(studentName);
+            studentViewRepository.deleteById(optionalStudentView.get().getStudentId());
+            optionalStudentView = studentViewRepository.findByStudent(studentName);
             if (optionalStudentView.isPresent()) {
                 LOG.error("Student with name {} has not been deleted when it was expected", studentName);
             } else {

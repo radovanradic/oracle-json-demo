@@ -17,7 +17,3 @@ in combination with
 might be simpler and faster to run.
 
 This demo just runs some scenarios with relational tables and then uses/modifies data from the tables using Oracle Json Duality View.
-
-Current issues with Micronaut Data solution for Oracle Json View:
-1. When creating new record with auto increment ID, we are not able to return newly generated id. 
-   That will be worked on in near future.
